@@ -1,4 +1,4 @@
-import { AUTH_SET } from '../action-types';
+import { Action, ActionTypes, AUTH_SET } from '../action-types';
 
 import {
   Authorized,
@@ -6,6 +6,7 @@ import {
   InvalidCredentials,
   LoginError,
   NotAuthorized,
+  AuthState,
 } from './constants';
 
 export const reset = () => ({
@@ -32,3 +33,5 @@ export const setAuthorized = () => ({
   type: AUTH_SET,
   status: Authorized,
 });
+
+export type AuthAction = Action<'AUTH_SET', { status: AuthState }>;

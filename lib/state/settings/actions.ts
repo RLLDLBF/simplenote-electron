@@ -1,5 +1,7 @@
 import { getIpcRenderer } from '../../utils/electron';
 
+import { Action } from '../action-types';
+
 const ipc = getIpcRenderer();
 
 export const setFontSize = fontSize => ({
@@ -98,3 +100,14 @@ export const toggleAutoHideMenuBar = () => (dispatch, getState) => {
     autoHideMenuBar: newValue,
   });
 };
+
+export type SetFontSize = Action<'FONT_SIZE_SET', { size: number }>;
+export type IncreaseFontSize = Action<'FONT_SIZE_INCREASE', {}>;
+export type DecreaseFontSize = Action<'FONT_SIZE_DECREASE', {}>;
+export type ResetFontSize = Action<'FONT_SIZE_RESET', {}>;
+
+export type SettingsAction =
+  | SetFontSize
+  | IncreaseFontSize
+  | DecreaseFontSize
+  | ResetFontSize;

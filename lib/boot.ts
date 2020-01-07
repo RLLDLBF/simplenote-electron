@@ -132,17 +132,17 @@ let props = {
       return;
     }
 
-    store.dispatch(setPendingAuth());
+    store.dispatch({ type: 'AUTH_SET', status: 'authorizing' });
     auth
       .authorize(username, password)
       .then(user => {
         resetStorageIfAccountChanged(username);
         if (!user.access_token) {
-          return store.dispatch(resetAuth);
+          return store.dispatch({ type: 'AUTH_SET', status: 'not-authorized' });
         }
 
         store.dispatch(setAccountName(username));
-        store.dispatch(setAuthorized());
+        store.dispatch({ type: 'AUTH_SET', status: 'authorized' });
         localStorage.access_token = user.access_token;
         token = user.access_token;
         client.setUser(user);
@@ -155,9 +155,9 @@ let props = {
             message.startsWith('unknown username:'),
           ])
         ) {
-          store.dispatch(setInvalidCredentials());
+          store.dispatch({ type: 'AUTH_SET', status: 'invalid-credentials' });
         } else {
-          store.dispatch(setLoginError());
+          store.dispatch({ type: 'AUTH_SET', status: 'login-error' });
         }
       });
   },

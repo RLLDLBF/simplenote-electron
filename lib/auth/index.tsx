@@ -9,9 +9,11 @@ import SimplenoteLogo from '../icons/simplenote';
 import Spinner from '../components/spinner';
 
 import { hasInvalidCredentials, hasLoginError } from '../state/auth/selectors';
-import { reset } from '../state/auth/actions';
 import { setWPToken } from '../state/settings/actions';
 import { viewExternalUrl } from '../utils/url-utils';
+
+import { MapDispatchToProps } from '../state';
+import { AppAction } from '../state/actions';
 
 export class Auth extends Component {
   static propTypes = {
@@ -339,10 +341,14 @@ export class Auth extends Component {
   };
 }
 
-const mapDispatchToProps = dispatch => ({
-  resetErrors: () => dispatch(reset()),
-  saveWPToken: token => dispatch(setWPToken(token)),
-});
+const mapDispatchToProps: MapDispatchToProps<
+  Record<'test' | 'resetErrors' | 'saveWPToken', (...args: any[]) => AppAction>,
+  {}
+> = {
+  test: () => ({ type: 'AUTH_SET', status: 'authorized' }),
+  resetErrors: () => ({ type: 'AUTH_SET', status: 'not-authorized' }),
+  saveWPToken: setWPToken,
+};
 
 const mapStateToProps = state => ({
   hasInvalidCredentials: hasInvalidCredentials(state),
